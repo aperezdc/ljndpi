@@ -21,5 +21,8 @@ build = {
       ["ndpi.protocol_bitmask"] = "ndpi/protocol_bitmask.lua",
       ["ndpi.protocol_ids_1_7"] = "ndpi/protocol_ids_1_7.lua",
       ["ndpi.protocol_ids_1_8"] = "ndpi/protocol_ids_1_8.lua",
+      ["ndpi.protocol_ids_2_0"] = "ndpi/protocol_ids_2_0.lua",
+      ["ndpi.protocol_ids_2_2"] = "ndpi/protocol_ids_2_2.lua",
+      ["ndpi.protocol_ids_2_3"] = "ndpi/protocol_ids_2_3.lua",
    }
 }
