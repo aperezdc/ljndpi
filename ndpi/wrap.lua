@@ -120,6 +120,7 @@ end
 
 if lib_version.major > 2 then
    detection_module.extra_dissection_possible = lib.ndpi_extra_dissection_possible
+   detection_module.process_extra_packet = lib.ndpi_detection_process_packet
 else
    -- nDPI 3.0 added ndpi_extra_dissection_possible(), which needs to be
    -- called to determine whether protocol specific fields are not yet
@@ -128,6 +129,7 @@ else
    detection_module.extra_dissection_possible = function (dm, dummy)
       return false
    end
+   detection_module.process_extra_packet = function (...) end
 end
 
 local detection_module_type = ffi.metatype("ndpi_detection_module_t", {

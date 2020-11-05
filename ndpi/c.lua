@@ -48,6 +48,14 @@ ndpi_protocol_t ndpi_detection_process_packet (ndpi_detection_module_t *detectio
                                                ndpi_id_t *src,
                                                ndpi_id_t *dst);
 
+void ndpi_detection_process_extra_packet (ndpi_detection_module_t *detection_module,
+                                          ndpi_flow_t *flow,
+                                          const uint8_t *packet,
+                                          unsigned short packetlen,
+                                          uint64_t current_tick,
+                                          ndpi_id_t *src,
+                                          ndpi_id_t *dst);
+
 void ndpi_dump_protocols (ndpi_detection_module_t *detection_module);
 
 int ndpi_load_protocols_file (ndpi_detection_module_t *detection_module,

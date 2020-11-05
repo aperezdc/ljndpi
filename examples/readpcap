@@ -219,6 +219,14 @@ local function handle_packet(header, data)
    flow.last_seen = time
 
    if flow.detected ~= ndpi.protocol.PROTOCOL_UNKNOWN then
+      if detector:extra_dissection_possible(flow.ndpi_flow) then
+         detector:process_packet(flow.ndpi_flow,
+                                 data + ip_offset,
+                                 ip_size,
+                                 time,
+                                 src_id,
+                                 dst_id)
+      end
       return true
    end
 
