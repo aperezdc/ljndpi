@@ -107,9 +107,18 @@ if lib_version.major == 1 and lib_version.minor == 7 then
    ]]
 else
    -- nDPI 1.8 and later
-   ffi.cdef [[
-   ndpi_detection_module_t* ndpi_init_detection_module (void);
 
+   if lib_version.major >= 3 then
+      ffi.cdef [[
+      ndpi_detection_module_t* ndpi_init_detection_module (uint32_t prefs);
+      ]]
+   else
+      ffi.cdef [[
+      ndpi_detection_module_t* ndpi_init_detection_module (void);
+      ]]
+   end
+
+   ffi.cdef [[
    void ndpi_exit_detection_module (ndpi_detection_module_t *detection_module);
 
    ndpi_protocol_t ndpi_find_port_based_protocol (ndpi_detection_module_t *detection_module,

@@ -96,9 +96,16 @@ if lib_version.major == 1 and lib_version.minor == 7 then
 else
    detection_module_free = lib.ndpi_exit_detection_module
 
-   detection_module_new = function (ctype, ticks_per_second)
-      -- XXX: No ticks_per_second parameter here?
-      return lib.ndpi_init_detection_module()
+   -- XXX: No ticks_per_second parameter here in newer versions.
+   if lib_version.major >= 3 then
+      -- TODO: Provide a way to specify the ndpi_init_prefs parameter.
+      detection_module_new = function (ctype, ticks_per_second)
+         return lib.ndpi_init_detection_module(0)
+      end
+   else
+      detection_module_new = function (ctype, ticks_per_second)
+         return lib.ndpi_init_detection_module()
+      end
    end
 
    -- In nDPI 1.8 the second parameter (uint8_t proto) has been dropped.
