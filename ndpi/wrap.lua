@@ -99,8 +99,11 @@ else
    -- XXX: No ticks_per_second parameter here in newer versions.
    if lib_version.major >= 3 then
       -- TODO: Provide a way to specify the ndpi_init_prefs parameter.
+      -- TODO: Split up the call to ndpi_finalize_initalization().
       detection_module_new = function (ctype, ticks_per_second)
-         return lib.ndpi_init_detection_module(0)
+         local dm = lib.ndpi_init_detection_module(0)
+         lib.ndpi_finalize_initalization(dm)
+         return dm
       end
    else
       detection_module_new = function (ctype, ticks_per_second)

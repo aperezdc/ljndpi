@@ -111,6 +111,7 @@ else
    if lib_version.major >= 3 then
       ffi.cdef [[
       ndpi_detection_module_t* ndpi_init_detection_module (uint32_t prefs);
+      void ndpi_finalize_initalization(ndpi_detection_module_t *detection_module);
       ]]
    else
       ffi.cdef [[
