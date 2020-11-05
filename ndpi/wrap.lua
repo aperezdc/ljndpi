@@ -80,7 +80,7 @@ local detection_module = {
    dump_protocols = lib.ndpi_dump_protocols;
 }
 
-if lib_version.minor == 7 then
+if lib_version.major == 1 and lib_version.minor == 7 then
    detection_module_free = function (dm)
       lib.ndpi_exit_detection_module(ffi.gc(dm, nil), C.free)
    end
@@ -108,6 +108,17 @@ else
    end
 end
 
+if lib_version.major > 2 then
+   detection_module.extra_dissection_possible = lib.ndpi_extra_dissection_possible
+else
+   -- nDPI 3.0 added ndpi_extra_dissection_possible(), which needs to be
+   -- called to determine whether protocol specific fields are not yet
+   -- dissected, in which case more data needs to be provided. In <3.0 all
+   -- the fields are always provided at once when a match is reported.
+   detection_module.extra_dissection_possible = function (dm, dummy)
+      return false
+   end
+end
 
 local detection_module_type = ffi.metatype("ndpi_detection_module_t", {
    __index = detection_module;

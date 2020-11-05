@@ -118,4 +118,12 @@ else
    ]]
 end
 
+if lib_version.major >= 3 then
+   -- nDPI 3.0 and later
+   ffi.cdef [[
+   uint8_t ndpi_extra_dissection_possible (ndpi_detection_module_t *detection_module,
+                                           ndpi_flow_t *flow);
+   ]]
+end
+
 return { version = lib_version, lib = lib }
