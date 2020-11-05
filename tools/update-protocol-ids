@@ -1,35 +1,55 @@
 #! /usr/bin/env lua
 --
 -- update-protocol-ids
--- Copyright (C) 2016-2017 Adrian Perez <aperez@igalia.com>
+-- Copyright (C) 2016-2017, 2020 Adrian Perez <aperez@igalia.com>
 --
 -- Distributed under terms of the Apache License 2.0.
 --
 
-if #arg ~= 0 then
-	io.stderr:write("Usage: update-protocol-ids < path/to/ndpi_protocol_ids.h\n")
-	os.exit(1)
+local help_msg = [[
+Usage: update-protocol-ids [--help | -h | (--enum|--defs)]
+
+Parse the input of the "ndpi_protocol_ids.h" header included as part of
+the nDPI distribution and generate Lua code that mimics the definitions
+of protocol type constants found in the header.
+
+Input is read from standard input and written to standard output.
+]]
+
+if #arg == 0 or arg[1] == "--help" or arg[1] == "-h" then
+	io.stderr:write(help_msg)
+	os.exit(0)
+end
+
+local PATTERNS = {
+   ["--enum"] = "NDPI_([^%s]+)%s*=%s*([%d_]+)";
+   ["--defs"] = "^%#define%s+NDPI_([^%s]+)%s+([%d_]+)";
+}
+
+local item_pattern = PATTERNS[arg[1]]
+if not item_pattern then
+   io.stderr:write(help_msg)
+   os.exit(1)
 end
 
 --
 -- Parse the input header
 --
-local define_pattern = "^%#define%s+NDPI_([^%s]+)%s+([%a%d_]+)"
-local ref_pattern = "^NDPI_([%a%d_]+)$"
+local ref_pattern = "^%#define%s+NDPI_([^%s]+)%s+NDPI_([%a%d_]+)$"
 
 local items = {}
 local references = {}
 
 for line in io.lines() do
-	local name, value = line:match(define_pattern)
+	local name, value = line:match(item_pattern)
 	if name and value and name ~= "LAST_IMPLEMENTED_PROTOCOL" then
-		local ref_name = value:match(ref_pattern)
-		if ref_name then
-			table.insert(references, { name = name, value = ref_name })
-      else
-         table.insert(items, { name = name, value = tonumber(value) })
+      table.insert(items, { name = name, value = tonumber(value) })
+   else
+      name, value = line:match(ref_pattern)
+      if name and value and value ~= "LAST_IMPLEMENTED_PROTOCOL" then
+			table.insert(references, { name = name, value = value })
 		end
-	end
+   end
 end
 table.sort(items, function (a, b) return a.value < b.value end)
 
