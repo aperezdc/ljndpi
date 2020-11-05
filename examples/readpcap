@@ -12,7 +12,7 @@ if env_debug ~= nil and env_debug ~= "0" then
    debug = function (fmt, ...) io.stderr:write(fmt:format(...)) end
 end
 
-local pcap = require("pcap")
+local pcap = require("examples.pcap")
 local ndpi = require("ndpi")
 local bit  = require("bit")
 local ffi  = require("ffi")
