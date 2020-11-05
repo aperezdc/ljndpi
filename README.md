@@ -46,7 +46,10 @@ end
 ## Requirements
 
 * [LuaJIT 2.0](http://www.luajit.org) or later.
-* [nDPI 1.7][ndpi] or later.
+* [nDPI 1.7][ndpi] or later, versions 1.7, 1.8, 2.0, 2.2, 2.3, 2.4, and 3.4
+  are known to work. For other versions you may need to use the
+  [update-protocool-ids](tools/update-protocol-ids) script to generate
+  a `protocol_ids_*.lua` file for it.
 
 ## Installation
 
